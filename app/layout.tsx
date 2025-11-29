@@ -11,25 +11,7 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif"
 export const metadata: Metadata = {
   title: "PhotoShare - Álbumes de Fotos Compartidos",
   description:
-    "Crea álbumes de fotos colaborativos para tus eventos. Comparte momentos especiales con amigos y familiares sin necesidad de registro.",
-  generator: "v0.app",
-  icons: {
-    icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
-    ],
-    apple: "/apple-icon.png",
-  },
+    "Crea álbumes de fotos colaborativos para tus eventos. Comparte momentos especiales con amigos y familiares sin necesidad de registro.",  
 }
 
 export const viewport: Viewport = {
