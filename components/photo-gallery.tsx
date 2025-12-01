@@ -1,60 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image, { type ImageProps } from "next/image";
-import axios from "axios";
+import { useState } from "react";
 import type { Photo } from "@/app/services/photos";
 import { PhotoLightbox } from "./photo-lightbox";
 import { Loader2, ImageOff } from "lucide-react";
-
-interface SecureImageProps extends Omit<ImageProps, "src"> {
-  src: string;
-}
-
-function SecureImage({ src, alt, ...props }: SecureImageProps) {
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let isMounted = true;
-    let objectUrl: string | null = null;
-
-    const fetchImage = async () => {
-      try {
-        const response = await axios.get(`/api/images/${src}`, {
-          responseType: "blob",
-        });
-
-        const blob = response.data;
-        objectUrl = URL.createObjectURL(blob);
-
-        if (isMounted) {
-          setImageSrc(objectUrl);
-          setLoading(false);
-        }
-      } catch (error) {
-        if (isMounted) setLoading(false);
-      }
-    };
-
-    if (src) {
-      fetchImage();
-    }
-
-    return () => {
-      isMounted = false;
-      if (objectUrl) {
-        URL.revokeObjectURL(objectUrl);
-      }
-    };
-  }, [src]);
-
-  if (loading || !imageSrc) {
-    return <div className="w-full h-full bg-muted animate-pulse" />;
-  }
-
-  return <Image src={imageSrc} alt={alt} {...props} />;
-}
+import { SecureImage } from "./secure-image";
 
 interface PhotoGalleryProps {
   photos: Photo[];
@@ -100,6 +50,7 @@ export function PhotoGallery({ photos, isLoading }: PhotoGalleryProps) {
             <SecureImage
               src={photo.imageID || "/placeholder.svg"}
               alt={photo.fileName}
+              thumbnail="true"
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
               className="object-cover transition-transform duration-300 group-hover:scale-105"

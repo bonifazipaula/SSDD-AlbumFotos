@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 export async function GET(
   request: NextRequest,
-  // Aunque el tipo es simple, la desestructuración debe ser tratada como asíncrona por el warning
+
   { params }: { params: { id: string } }
 ) {
   try {
@@ -34,12 +34,6 @@ export async function GET(
     let bufferToSend: Buffer;
 
     if (imageType === "thumbnail") {
-      if (!image.thumbnail) {
-        return NextResponse.json(
-          { error: "Miniatura no disponible" },
-          { status: 404 }
-        );
-      }
       bufferToSend = image.thumbnail;
     } else {
       bufferToSend = image.photo;
