@@ -7,8 +7,7 @@ const api = axios.create({
 export interface Photo {
   id: string;
   albumId: string;
-  blobUrl: string;
-  thumbnailUrl: string;
+  imageID: string;
   fileName: string;
   fileSize: number;
   createdAt: string;
