@@ -1,13 +1,12 @@
-import mongoose, { Schema, type Document, type Model } from "mongoose"
+import mongoose, { Schema, type Document, type Model } from "mongoose";
 
 export interface IPhoto extends Document {
-  _id: mongoose.Types.ObjectId
-  albumId: string
-  blobUrl: string
-  thumbnailUrl: string
-  fileName: string
-  fileSize: number
-  createdAt: Date
+  _id: mongoose.Types.ObjectId;
+  albumId: string;
+  imageId: mongoose.Types.ObjectId;
+  fileName: string;
+  fileSize: number;
+  createdAt: Date;
 }
 
 const PhotoSchema = new Schema<IPhoto>(
@@ -17,12 +16,8 @@ const PhotoSchema = new Schema<IPhoto>(
       required: true,
       index: true,
     },
-    blobUrl: {
-      type: String,
-      required: true,
-    },
-    thumbnailUrl: {
-      type: String,
+    imageId: {
+      type: mongoose.Types.ObjectId,
       required: true,
     },
     fileName: {
@@ -36,12 +31,13 @@ const PhotoSchema = new Schema<IPhoto>(
   },
   {
     timestamps: true,
-  },
-)
+  }
+);
 
 // Índice compuesto para búsqueda eficiente por álbum
-PhotoSchema.index({ albumId: 1, createdAt: -1 })
+PhotoSchema.index({ albumId: 1, createdAt: -1 });
 
-const Photo: Model<IPhoto> = mongoose.models.Photo || mongoose.model<IPhoto>("Photo", PhotoSchema)
+const Photo: Model<IPhoto> =
+  mongoose.models.Photo || mongoose.model<IPhoto>("Photo", PhotoSchema);
 
-export default Photo
+export default Photo;
