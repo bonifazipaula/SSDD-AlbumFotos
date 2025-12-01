@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import connectDB from "@/app/lib/database";
 import Album from "@/app/models/Album";
 import Photo from "@/app/models/Photo";
+import Image from "@/app/models/Image";
 
 // GET - Obtener un álbum por UUID
 export async function GET(
@@ -20,23 +21,15 @@ export async function GET(
         { status: 404 }
       );
     }
-
-    // Verificar si el álbum ha expirado
     if (new Date(album.expiresAt) < new Date()) {
-      // Eliminar el álbum expirado y sus fotos
       const photos = await Photo.find({ albumId: id });
-
-      // Eliminar blobs de las fotos
-      // for (const photo of photos) {
-      //   try {
-      //     await del(photo.blobUrl);
-      //     if (photo.thumbnailUrl) {
-      //       await del(photo.thumbnailUrl);
-      //     }
-      //   } catch (e) {
-      //     console.error("Error deleting blob:", e);
-      //   }
-      // }
+      for (const photo of photos) {
+        try {
+          await Image.deleteOne({ _id: photo.imageId });
+        } catch (e) {
+          console.error("Error deleting blob:", e);
+        }
+      }
 
       await Photo.deleteMany({ albumId: id });
       await Album.deleteOne({ uuid: id });
